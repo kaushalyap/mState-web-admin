@@ -15,5 +15,3 @@ Dashboard to monitor mState mobile app users depression levels.
 - TailwindCSS
 - Mantine
 - Firebase
-- Chartjs
-- React-hook Form

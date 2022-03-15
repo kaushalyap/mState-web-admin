@@ -13,34 +13,21 @@ const Profile: NextPage = () => {
         <meta name="description" content="User Profile" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="p-6 md:grid md:place-items-center h-screen">
+      <main className="container lg:mx-auto px-4 lg:px-6 md:px-6 py-8">
         {user ? (
-          <div>
-            <div>
-              <h2>Basic Info</h2>
-              <div>
-                <span>Name :</span>
-                <span>John Doe</span>
-              </div>
-              <div>
-                <span>Address :</span>
-                <span>No 26th, Neverland</span>
-              </div>
-              <div>
-                <span>Mobile No :</span>
-                <span>+77 123 456 7</span>
-              </div>
+          <div className="md:mt-6">
+            <div className="mb-10">
+              <h2 className="text-xl md:text-2xl font-bold mb-2">Basic Info</h2>
+              <div className="text-lg lg:text-xl">John Doe</div>
+              <div className="text-lg lg:text-xl">No 26th, Neverland</div>
+              <div className="text-lg lg:text-xl">+77 123 456 7</div>
             </div>
             <div>
-              <h2>Guardian Info</h2>
-              <div>
-                <span>Full Name :</span>
-                <span>Marcus Bell</span>
-              </div>
-              <div>
-                <span>Mobile No :</span>
-                <span>+77 123 456 7</span>
-              </div>
+              <h2 className="text-xl md:text-2xl font-bold mb-2">
+                Guardian Info
+              </h2>
+              <div className="text-lg lg:text-xl">Marcus Bell</div>
+              <div className="text-lg lg:text-xl">+77 123 456 7</div>
             </div>
           </div>
         ) : (

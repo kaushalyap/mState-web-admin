@@ -11,20 +11,9 @@ const Login: NextPage = () => {
         <meta name="description" content="Web Admin to sign in" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="p-6 md:grid md:place-items-center h-screen">
-        <div>
-          <div className="mb-6 mx-auto text-center">
-            <Image
-              className="rounded-3xl"
-              src="/logo.svg"
-              width={200}
-              height={200}
-              alt="mState logo"
-            />
-          </div>
-          <div className="mx-auto">
-            <SignIn />
-          </div>
+      <main className="p-6 md:flex md:h-screen justify-center items-center">
+        <div className="mx-auto mt-8 md:mt-0">
+          <SignIn />
         </div>
       </main>
     </div>

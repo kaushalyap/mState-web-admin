@@ -2,6 +2,7 @@ import React from "react";
 import { TextInput, PasswordInput, Button, Space } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useAuth } from "../context/AuthContext";
+import { useRouter } from "next/router";
 
 export default function SignIn() {
   const form = useForm({
@@ -19,13 +20,10 @@ export default function SignIn() {
           : null,
     },
   });
-
+  const router = useRouter();
   const { signIn } = useAuth();
 
-  const handleSubmit = async function (
-    values: typeof form.values
-    /*  errors: typeof form.errors */
-  ) {
+  const handleSubmit = async function (values: typeof form.values) {
     if (values.email != "" && values.password != "") {
       console.log(values.email);
       console.log(values.password);
@@ -36,6 +34,7 @@ export default function SignIn() {
       }
     }
     console.log(values);
+    router.push("/");
   };
 
   return (
@@ -45,21 +44,23 @@ export default function SignIn() {
         required
         label="Email"
         autoComplete="true"
+        size="lg"
         placeholder="your@email.com"
         {...form.getInputProps("email")}
       />
-      <Space h="xs" />
+      <Space h="lg" />
 
       <PasswordInput
         id="password"
         required
         label="Password"
         autoComplete="true"
+        size="lg"
         {...form.getInputProps("password")}
       />
-      <Space h="sm" />
+      <Space h="lg" />
 
-      <Button type="submit" className="bg-orange-400">
+      <Button type="submit" className="bg-green-600" size="lg">
         Submit
       </Button>
     </form>
