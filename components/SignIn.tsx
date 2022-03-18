@@ -25,15 +25,12 @@ export default function SignIn() {
 
   const handleSubmit = async function (values: typeof form.values) {
     if (values.email != "" && values.password != "") {
-      console.log(values.email);
-      console.log(values.password);
       try {
         await signIn(values.email, values.password);
       } catch (err) {
         console.log(err);
       }
     }
-    console.log(values);
     router.push("/");
   };
 

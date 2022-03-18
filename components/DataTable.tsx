@@ -7,7 +7,7 @@ export default function DataTable({ children }: { children: React.ReactNode }) {
       <thead className="bg-yellow-300">
         <tr>
           <th className="md:text-lg lg:text-xl lg:pl-6 tracking-wider rounded-tl-xl">
-            Name
+            UID
           </th>
           <th className="md:text-lg lg:text-xl tracking-wider">Test 1</th>
           <th className="md:text-lg lg:text-xl tracking-wider">Test 2</th>

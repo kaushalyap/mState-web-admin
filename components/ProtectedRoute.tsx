@@ -10,7 +10,6 @@ export default function ProtectedRoute({
   const { user } = useAuth();
   const router = useRouter();
   useEffect(() => {
-    console.log(user);
     if (!user) {
       router.push("/login");
     }
