@@ -4,61 +4,23 @@ import DataRow from "./DataRow";
 import { useEffect, useState } from "react";
 import { readHistories } from "../services/ReadData";
 import Link from "next/link";
+import { User } from "../models/User";
 
 export default function DataTable() {
   const [histories, setHistories] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     readHistories().then((item) => {
       if (item) {
+        console.clear();
+        console.log(item);
         setHistories(item);
-      } else console.error("Fetching histories failed!");
+        setLoading(false);
+      } else console.log("");
     });
-  }, [setHistories]);
+  }, [setHistories, setLoading]);
 
-  /*   const histories = [
-    [
-      {
-        uid: "prW2afyS3WVMaUsnKoXBoEyrvLR2",
-        timestamp: {
-          seconds: 1647168151,
-          nanoseconds: 124000000,
-        },
-        score: 16,
-        user: null,
-      },
-      {
-        uid: "prW2afyS3WVMaUsnKoXBoEyrvLR2",
-        timestamp: {
-          seconds: 1647163878,
-          nanoseconds: 998000000,
-        },
-        score: 18,
-        user: null,
-      },
-      {
-        uid: "prW2afyS3WVMaUsnKoXBoEyrvLR2",
-        timestamp: {
-          seconds: 1647162553,
-          nanoseconds: 5000000,
-        },
-        score: 17,
-        user: null,
-      },
-    ],
-    [
-      {
-        uid: "OOKuCxCV9wYrB8LtnxoN0mQcyqC2",
-        timestamp: {
-          seconds: 1647515417,
-          nanoseconds: 594000000,
-        },
-        score: 16,
-        user: null,
-      },
-    ],
-  ];
- */
   return (
     <Table striped highlightOnHover verticalSpacing="md">
       <thead className="bg-yellow-300">
@@ -76,70 +38,60 @@ export default function DataTable() {
       </thead>
       <tbody>
         {histories != null
-          ? histories.map((data: any, index: number) => {
+          ? histories.map((item: any, index: number) => {
               return (
-                <Link key={index} href={`profile/${data[0].uid}`} passHref>
+                <Link key={index} href={`profile/${item[0].uid}`} passHref>
                   <tr className="bg-pink-200 cursor-pointer">
                     <td className="md:text-lg lg:pl-6">
-                      {trimUid(data[0].uid)}
+                      {trimUid(item[0].uid)}
                     </td>
                     <td className="md:text-lg">
                       <div>
-                        <span className="lg:text-xl">{data[0].score} </span>
+                        <span className="lg:text-xl">{item[0].score} </span>
                         <span className="text-gray-600 text-sm">
-                          Type {data[0].questionnaireType}
+                          {item[0].questionnaireType}
                         </span>
                       </div>
                       <div className="text-xs md:text-base text-gray-600 tracking-wider">
-                        {convertTimestampToDate(data[0].timestamp.seconds)}
+                        {convertTimestampToDate(item[0].timestamp.seconds)}
                       </div>
                     </td>
                     <td className="md:text-lg">
                       <div>
-                        <span className="lg:text-xl">
-                          {data[1] != undefined ? data[1].score : "N/A"}{" "}
-                        </span>
+                        <span className="lg:text-xl">{item[1].score}</span>
                         <span className="text-gray-600 text-sm">
-                          {data[1] != undefined
-                            ? data[1].questionnaireType
-                            : "N/A"}
+                          &nbsp;
+                          {item[1].questionnaireType}
                         </span>
                       </div>
                       <div className="text-sm md:text-base text-gray-600 tracking-wider">
-                        {data[1] != undefined
-                          ? convertTimestampToDate(data[1].timestamp.seconds)
-                          : "N/A"}
+                        {convertTimestampToDate(item[1].timestamp.seconds)}
                       </div>
                     </td>
                     <td className="md:text-lg tracking-wide">
                       <div>
-                        <span className="lg:text-xl">
-                          {data[2] != undefined ? data[2].score : "N/A"}{" "}
-                        </span>
+                        <span className="lg:text-xl">{item[2].score}</span>
                         <span className="text-gray-600 text-sm">
-                          {data[2] != undefined
-                            ? data[2].questionnaireType
-                            : "N/A"}
+                          &nbsp;
+                          {item[2].questionnaireType}
                         </span>
                       </div>
                       <div className="text-sm md:text-base text-gray-600 tracking-wider">
-                        {data[2] != undefined
-                          ? convertTimestampToDate(data[2].timestamp.seconds)
-                          : "N/A"}
+                        {convertTimestampToDate(item[2].timestamp.seconds)}
                       </div>
                     </td>
                     <td className="md:text-lg tracking-wide">
                       <div>
                         <span className="text-gray-600 text-sm md:text-base lg:text-lg">
-                          Sms:{" "}
+                          Sms:
                         </span>
-                        {/* {data[0].user!!.settings.smsOn ? "On" : "Off"} */}
+                        {displaySettings(item[0].user, "sms")}
                       </div>
                       <div>
                         <span className="text-gray-600 text-sm md:text-base lg:text-lg">
-                          Call:{" "}
+                          Call:
                         </span>
-                        {/* {data[0].user!!.settings.callOn ? "On" : "Off"} */}
+                        {displaySettings(item[0].user, "call")}
                       </div>
                     </td>
                   </tr>
@@ -157,10 +109,21 @@ function convertTimestampToDate(timestamp: number): string {
   const year = date.getFullYear().toString().substring(2, 4);
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  console.log(year);
   return `${day}/${month}/${year}`;
 }
 
 function trimUid(uid: string) {
   return uid.toString().substring(0, 10);
+}
+
+function displaySettings(user: any, setting: string): string {
+  let onOff = "";
+  if (user == null) {
+    console.log("User is Null");
+  } else onOff = user["settings"]["smsOn"] ? "On" : "Off";
+  /* if (user == null) {
+    return;
+  } else onOff = user.settings.callOn ? "On" : "Off"; */
+
+  return onOff;
 }

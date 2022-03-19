@@ -8,7 +8,6 @@ import {
 } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { History } from "../models/History";
-import { User } from "../models/User";
 import { historyConverter, userConverter } from "./Converters";
 
 export async function readHistories() {
@@ -17,7 +16,6 @@ export async function readHistories() {
     where("score", ">=", 10)
   ).withConverter(historyConverter);
   const querySnapshot = await getDocs(q);
-  console.clear();
   const histories = Array<History>();
   querySnapshot.forEach((doc) => {
     if (doc.exists()) {
@@ -49,17 +47,26 @@ function filterLastMonthHistories(histories: Array<History>) {
 
   const groupedHistories = groupByUid(recentHistories, "uid");
 
+  Object.keys(groupedHistories).forEach(function (key) {
+    readUser(key).then((user) => {
+      if (user) {
+        groupedHistories[key].forEach(function (history: History) {
+          history.user = user;
+        });
+      }
+    });
+  });
+
   return sortByTimestampLimit(groupedHistories);
 }
 
-function groupByUid(arr: Array<History>, key: string) {
-  return arr.reduce(function (rv, x) {
+function groupByUid(histories: Array<History>, key: string) {
+  return histories.reduce(function (rv, x) {
     (rv[x[key]] = rv[x[key]] || []).push(x);
     return rv;
   }, {});
 }
 
-// sort histories by timestamp desc and limit to 3
 function sortByTimestampLimit(arr: Object) {
   const sortedRecentHistories: Array<Array<History>> = [];
   Object.keys(arr).forEach(function (key) {
@@ -80,7 +87,6 @@ export async function readUser(docId: string) {
 
   if (docSnap.exists()) {
     let user = docSnap.data();
-    console.log(docSnap.data());
     return user;
   } else console.log("No such document");
 }

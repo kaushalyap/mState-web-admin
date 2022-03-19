@@ -17,7 +17,7 @@ const historyConverter = {
     return new History(
       "",
       data.timestamp,
-      data.QuestionnaireType,
+      data.questionnaireType,
       data.score,
       null
     );
@@ -42,8 +42,8 @@ const userConverter = {
       data.name,
       data.address,
       data.mobileNo,
-      data.guardian,
-      data.settings
+      data.settings,
+      data.guardian
     );
   },
 };

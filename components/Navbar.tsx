@@ -12,7 +12,15 @@ export default function Navbar() {
     <nav className="h-24 bg-green-600 px-2 md:px-4 flex">
       <div className="container mx-auto flex justify-between items-center xl:ml-20">
         <Link href="/" passHref>
-          <WrappedImage />
+          <div>
+            <Image
+              className="rounded-lg cursor-pointer"
+              src="/logo.svg"
+              width={70}
+              height={70}
+              alt="mState logo"
+            />
+          </div>
         </Link>
         {router.pathname != "/login" ? (
           <button
@@ -29,17 +37,3 @@ export default function Navbar() {
     </nav>
   );
 }
-
-const WrappedImage = React.forwardRef(() => {
-  return (
-    <Image
-      className="rounded-lg cursor-pointer"
-      src="/logo.svg"
-      width={70}
-      height={70}
-      alt="mState logo"
-    />
-  );
-});
-
-WrappedImage.displayName = "WrappedImage";

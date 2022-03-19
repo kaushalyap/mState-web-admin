@@ -26,7 +26,6 @@ const Home: NextPage = () => {
                 Note : Test 1/2/3 indicate the most recent tests, where 1 is
                 considered the most recent.
               </p>
-
               <DataTable />
             </div>
           </>
