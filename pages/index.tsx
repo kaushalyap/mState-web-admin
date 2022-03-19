@@ -3,31 +3,10 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useAuth } from "../context/AuthContext";
 import DataTable from "../components/DataTable";
-import DataRow from "../components/DataRow";
-import { useEffect, useState } from "react";
-import { readHistories } from "../services/ReadData";
-import { History } from "../models/History";
 
 const Home: NextPage = () => {
   const { user } = useAuth();
   const router = useRouter();
-  const [histories, setHistories] = useState<any>([]);
-
-  useEffect(() => {
-    readHistories().then((item) => {
-      if (item) {
-        console.log(item);
-        setHistories(item);
-      } else console.error("Fetching histories failed!");
-    });
-  }, [setHistories]);
-
-  const rows =
-    histories != null
-      ? histories.map((index: number, item: Array<History>) => {
-          <DataRow key={index} data={item} />;
-        })
-      : null;
 
   return (
     <div>
@@ -47,7 +26,8 @@ const Home: NextPage = () => {
                 Note : Test 1/2/3 indicate the most recent tests, where 1 is
                 considered the most recent.
               </p>
-              <DataTable>{rows}</DataTable>
+
+              <DataTable />
             </div>
           </>
         ) : (

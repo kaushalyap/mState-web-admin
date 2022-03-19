@@ -62,7 +62,7 @@ function groupByUid(arr: Array<History>, key: string) {
 // sort histories by timestamp desc and limit to 3
 function sortByTimestampLimit(arr: Object) {
   const sortedRecentHistories: Array<Array<History>> = [];
-  Object.keys(arr).forEach(function (key, index) {
+  Object.keys(arr).forEach(function (key) {
     sortedRecentHistories.push(
       arr[key]
         .sort((first: History, second: History) =>
