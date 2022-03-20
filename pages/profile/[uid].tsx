@@ -32,26 +32,32 @@ const Profile: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="container lg:mx-auto px-4 lg:px-6 md:px-6 py-8">
-        {user && !loading ? (
-          <div className="md:mt-6">
-            <div className="mb-10">
-              <h2 className="text-xl md:text-2xl font-bold mb-2">Basic Info</h2>
-              <div className="text-lg lg:text-xl">{profile.name}</div>
-              <div className="text-lg lg:text-xl">{profile.address}</div>
-              <div className="text-lg lg:text-xl">{profile.mobileNo}</div>
-            </div>
-            <div>
-              <h2 className="text-xl md:text-2xl font-bold mb-2">
-                Guardian Info
-              </h2>
-              <div className="text-lg lg:text-xl">
-                {profile.guardian.fullName}
+        {user ? (
+          !loading ? (
+            <div className="md:mt-6">
+              <div className="mb-10">
+                <h2 className="text-xl md:text-2xl font-bold mb-2">
+                  Basic Info
+                </h2>
+                <div className="text-lg lg:text-xl">{profile.name}</div>
+                <div className="text-lg lg:text-xl">{profile.address}</div>
+                <div className="text-lg lg:text-xl">{profile.mobileNo}</div>
               </div>
-              <div className="text-lg lg:text-xl">{profile.mobileNo}</div>
+              <div>
+                <h2 className="text-xl md:text-2xl font-bold mb-2">
+                  Guardian Info
+                </h2>
+                <div className="text-lg lg:text-xl">
+                  {profile.guardian.fullName}
+                </div>
+                <div className="text-lg lg:text-xl">{profile.mobileNo}</div>
+              </div>
             </div>
-          </div>
+          ) : (
+            <h1>Loading data...</h1>
+          )
         ) : (
-          <h1>Unauthorized!</h1>
+          <h1>Unauthorized</h1>
         )}
       </main>
     </div>

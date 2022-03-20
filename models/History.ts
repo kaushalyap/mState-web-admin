@@ -1,28 +1,25 @@
-import { User } from "./User";
+import { Timestamp } from "firebase/firestore";
+import { QuestionnaireType } from "./QuestionnaireType";
+import { Settings } from "./Settings";
 
 export class History {
   uid: string;
-  timestamp: number;
+  timestamp: Timestamp;
   questionnaireType: QuestionnaireType;
   score: number;
-  user?: User;
+  settings: Settings;
 
   constructor(
     uid: string,
-    timestamp: number,
+    timestamp: Timestamp,
     questionnaireType: QuestionnaireType,
     score: number,
-    user: User
+    settings: Settings
   ) {
     this.uid = uid;
     this.timestamp = timestamp;
     this.questionnaireType = questionnaireType;
     this.score = score;
-    this.user = user;
+    this.settings = settings;
   }
-}
-
-enum QuestionnaireType {
-  PHQ9 = "PHQ9",
-  EPDS = "EPDS",
 }

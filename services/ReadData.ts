@@ -51,7 +51,7 @@ function filterLastMonthHistories(histories: Array<History>) {
     readUser(key).then((user) => {
       if (user) {
         groupedHistories[key].forEach(function (history: History) {
-          history.user = user;
+          history.settings = user.settings;
         });
       }
     });

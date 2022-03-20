@@ -1,19 +1,18 @@
 import React from "react";
 import { Table } from "@mantine/core";
-import DataRow from "./DataRow";
 import { useEffect, useState } from "react";
 import { readHistories } from "../services/ReadData";
 import Link from "next/link";
-import { User } from "../models/User";
+import { History } from "../models/History";
 
 export default function DataTable() {
-  const [histories, setHistories] = useState<any>(null);
+  const [histories, setHistories] = useState<Array<Array<History>>>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     readHistories().then((item) => {
       if (item) {
-        console.clear();
+        // console.clear();
         console.log(item);
         setHistories(item);
         setLoading(false);
@@ -37,8 +36,9 @@ export default function DataTable() {
         </tr>
       </thead>
       <tbody>
-        {histories != null
-          ? histories.map((item: any, index: number) => {
+        {!loading ? (
+          histories != null ? (
+            histories.map((item: Array<History>, index: number) => {
               return (
                 <Link key={index} href={`profile/${item[0].uid}`} passHref>
                   <tr className="bg-pink-200 cursor-pointer">
@@ -85,20 +85,31 @@ export default function DataTable() {
                         <span className="text-gray-600 text-sm md:text-base lg:text-lg">
                           Sms:
                         </span>
-                        {displaySettings(item[0].user, "sms")}
+                        <span>
+                          &nbsp;{displaySettings(item[0].settings, "sms")}
+                        </span>
                       </div>
                       <div>
                         <span className="text-gray-600 text-sm md:text-base lg:text-lg">
                           Call:
                         </span>
-                        {displaySettings(item[0].user, "call")}
+                        <span>
+                          &nbsp;{displaySettings(item[0].settings, "call")}
+                        </span>
                       </div>
                     </td>
                   </tr>
                 </Link>
               );
             })
-          : ""}
+          ) : (
+            ""
+          )
+        ) : (
+          <tr>
+            <td>Loading...</td>
+          </tr>
+        )}
       </tbody>
     </Table>
   );
@@ -116,14 +127,16 @@ function trimUid(uid: string) {
   return uid.toString().substring(0, 10);
 }
 
-function displaySettings(user: any, setting: string): string {
-  let onOff = "";
-  if (user == null) {
-    console.log("User is Null");
-  } else onOff = user["settings"]["smsOn"] ? "On" : "Off";
-  /* if (user == null) {
-    return;
-  } else onOff = user.settings.callOn ? "On" : "Off"; */
+function displaySettings(settings: any, key: string) {
+  if (settings != null && key == "sms") {
+    let onOff = settings.smsOn ? "On" : "Off";
+    console.log("Sms On : " + onOff);
+    return onOff;
+  } else console.log("Settings Sms is null");
 
-  return onOff;
+  if (settings != null && key == "call") {
+    let onOff = settings.callOn ? "On" : "Off";
+    console.log("Call On : " + onOff);
+    return onOff;
+  } else console.log("Settings Call is null");
 }
