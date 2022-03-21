@@ -76,13 +76,11 @@ function trimUid(uid: string) {
 function displaySettings(settings: any, key: string) {
   if (settings != null && key == "sms") {
     let onOff = settings.smsOn ? "On" : "Off";
-    console.log("Sms On : " + onOff);
     return onOff;
   }
 
   if (settings != null && key == "call") {
     let onOff = settings.callOn ? "On" : "Off";
-    console.log("Call On : " + onOff);
     return onOff;
   }
 }
