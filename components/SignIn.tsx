@@ -7,8 +7,8 @@ import { useRouter } from "next/router";
 export default function SignIn() {
   const form = useForm({
     initialValues: {
-      email: "admin@example.com",
-      password: "123456",
+      email: "",
+      password: "",
     },
 
     validate: {
