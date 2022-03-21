@@ -8,6 +8,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { History } from "../models/History";
+import { User } from "../models/User";
 import { historyConverter, userConverter } from "./Converters";
 
 export async function readHistories() {
@@ -27,7 +28,7 @@ export async function readHistories() {
   return filterLastMonthHistories(histories);
 }
 
-function filterLastMonthHistories(histories: Array<History>) {
+async function filterLastMonthHistories(histories: Array<History>) {
   const date = new Date();
   const month = date.getMonth();
   date.setMonth(date.getMonth() - 1);
@@ -40,24 +41,34 @@ function filterLastMonthHistories(histories: Array<History>) {
   const recentHistories = Array<History>();
 
   histories.forEach((history) => {
-    if (history.timestamp >= monthOldTimestamp) {
+    if (history.timestamp.seconds >= monthOldTimestamp) {
       recentHistories.push(history);
     }
   });
 
   const groupedHistories = groupByUid(recentHistories, "uid");
+  const uIds = Object.keys(groupedHistories);
 
-  Object.keys(groupedHistories).forEach(function (key) {
-    readUser(key).then((user) => {
-      if (user) {
-        groupedHistories[key].forEach(function (history: History) {
+  const sortedRecentHistories = sortByTimestampLimit(groupedHistories);
+
+  const users: Array<User | undefined> = await Promise.all(
+    uIds.map(function (uid) {
+      return readUser(uid);
+    })
+  );
+
+  sortedRecentHistories.forEach(function (histories) {
+    histories.forEach(function (history) {
+      users.forEach(function (user) {
+        if (user != undefined) {
           history.settings = user.settings;
-        });
-      }
+        }
+      });
     });
   });
 
-  return sortByTimestampLimit(groupedHistories);
+  const filteredHistories = filterSettingsOff(sortedRecentHistories);
+  return filteredHistories;
 }
 
 function groupByUid(histories: Array<History>, key: string) {
@@ -79,6 +90,12 @@ function sortByTimestampLimit(arr: Object) {
     );
   });
   return sortedRecentHistories;
+}
+
+function filterSettingsOff(histories: Array<Array<History>>) {
+  return histories.filter(function (item) {
+    return !item[0].settings.smsOn || !item[0].settings.callOn;
+  });
 }
 
 export async function readUser(docId: string) {

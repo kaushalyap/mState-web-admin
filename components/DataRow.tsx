@@ -2,67 +2,87 @@ import React from "react";
 import Link from "next/link";
 import { History } from "../models/History";
 
-export default function DataRow({ data }: { data: any }) {
+export default function DataRow({ data }: { data: Array<History> }) {
   return (
     <Link href={`profile/${data[0].uid}`} passHref>
       <tr className="bg-pink-200 cursor-pointer">
-        <td className="md:text-lg lg:pl-6">{data[0].uid}</td>
+        <td className="md:text-lg lg:pl-6">{trimUid(data[0].uid)}</td>
         <td className="md:text-lg">
           <div>
             <span className="lg:text-xl">{data[0].score} </span>
             <span className="text-gray-600 text-sm">
-              Type {data[0].questionnaireType}
+              {data[0].questionnaireType}
             </span>
           </div>
           <div className="text-xs md:text-base text-gray-600 tracking-wider">
-            Timestamp {data[0].timestamp}
+            {convertTimestampToDate(data[0].timestamp.seconds)}
           </div>
         </td>
         <td className="md:text-lg">
           <div>
-            <span className="lg:text-xl">
-              {data[1].score != null ? data[1].score : "N/A"}{" "}
-            </span>
+            <span className="lg:text-xl">{data[1].score}</span>
             <span className="text-gray-600 text-sm">
-              {data[1].questionnaireType != null
-                ? data[1].questionnaireType
-                : "N/A"}
+              &nbsp;
+              {data[1].questionnaireType}
             </span>
           </div>
           <div className="text-sm md:text-base text-gray-600 tracking-wider">
-            {data[1].timestamp != null ? data[1].timestamp : "N/A"}
+            {convertTimestampToDate(data[1].timestamp.seconds)}
           </div>
         </td>
         <td className="md:text-lg tracking-wide">
           <div>
-            <span className="lg:text-xl">
-              {data[2].score != null ? data[2].score : "N/A"}{" "}
-            </span>
+            <span className="lg:text-xl">{data[2].score}</span>
             <span className="text-gray-600 text-sm">
-              {data[2].questionnaireType != null
-                ? data[2].questionnaireType
-                : "N/A"}
+              &nbsp;
+              {data[2].questionnaireType}
             </span>
           </div>
           <div className="text-sm md:text-base text-gray-600 tracking-wider">
-            {data[2].timestamp != null ? data[2].timestamp : "N/A"}
+            {convertTimestampToDate(data[2].timestamp.seconds)}
           </div>
         </td>
         <td className="md:text-lg tracking-wide">
           <div>
             <span className="text-gray-600 text-sm md:text-base lg:text-lg">
-              Sms:{" "}
+              Sms:
             </span>
-            {/* {data[0].user!!.settings.smsOn ? "On" : "Off"} */}
+            <span>&nbsp;{displaySettings(data[0].settings, "sms")}</span>
           </div>
           <div>
             <span className="text-gray-600 text-sm md:text-base lg:text-lg">
-              Call:{" "}
+              Call:
             </span>
-            {/* {data[0].user!!.settings.callOn ? "On" : "Off"} */}
+            <span>&nbsp;{displaySettings(data[0].settings, "call")}</span>
           </div>
         </td>
       </tr>
     </Link>
   );
+}
+
+function convertTimestampToDate(timestamp: number): string {
+  const date = new Date(timestamp * 1000);
+  const year = date.getFullYear().toString().substring(2, 4);
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  return `${day}/${month}/${year}`;
+}
+
+function trimUid(uid: string) {
+  return uid.toString().substring(0, 10);
+}
+
+function displaySettings(settings: any, key: string) {
+  if (settings != null && key == "sms") {
+    let onOff = settings.smsOn ? "On" : "Off";
+    console.log("Sms On : " + onOff);
+    return onOff;
+  }
+
+  if (settings != null && key == "call") {
+    let onOff = settings.callOn ? "On" : "Off";
+    console.log("Call On : " + onOff);
+    return onOff;
+  }
 }

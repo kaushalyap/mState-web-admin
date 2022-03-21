@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { readHistories } from "../services/ReadData";
 import Link from "next/link";
 import { History } from "../models/History";
+import DataRow from "./DataRow";
 
 export default function DataTable() {
   const [histories, setHistories] = useState<Array<Array<History>>>([]);
@@ -12,11 +13,10 @@ export default function DataTable() {
   useEffect(() => {
     readHistories().then((item) => {
       if (item) {
-        // console.clear();
         console.log(item);
         setHistories(item);
         setLoading(false);
-      } else console.log("");
+      }
     });
   }, [setHistories, setLoading]);
 
@@ -39,68 +39,7 @@ export default function DataTable() {
         {!loading ? (
           histories != null ? (
             histories.map((item: Array<History>, index: number) => {
-              return (
-                <Link key={index} href={`profile/${item[0].uid}`} passHref>
-                  <tr className="bg-pink-200 cursor-pointer">
-                    <td className="md:text-lg lg:pl-6">
-                      {trimUid(item[0].uid)}
-                    </td>
-                    <td className="md:text-lg">
-                      <div>
-                        <span className="lg:text-xl">{item[0].score} </span>
-                        <span className="text-gray-600 text-sm">
-                          {item[0].questionnaireType}
-                        </span>
-                      </div>
-                      <div className="text-xs md:text-base text-gray-600 tracking-wider">
-                        {convertTimestampToDate(item[0].timestamp.seconds)}
-                      </div>
-                    </td>
-                    <td className="md:text-lg">
-                      <div>
-                        <span className="lg:text-xl">{item[1].score}</span>
-                        <span className="text-gray-600 text-sm">
-                          &nbsp;
-                          {item[1].questionnaireType}
-                        </span>
-                      </div>
-                      <div className="text-sm md:text-base text-gray-600 tracking-wider">
-                        {convertTimestampToDate(item[1].timestamp.seconds)}
-                      </div>
-                    </td>
-                    <td className="md:text-lg tracking-wide">
-                      <div>
-                        <span className="lg:text-xl">{item[2].score}</span>
-                        <span className="text-gray-600 text-sm">
-                          &nbsp;
-                          {item[2].questionnaireType}
-                        </span>
-                      </div>
-                      <div className="text-sm md:text-base text-gray-600 tracking-wider">
-                        {convertTimestampToDate(item[2].timestamp.seconds)}
-                      </div>
-                    </td>
-                    <td className="md:text-lg tracking-wide">
-                      <div>
-                        <span className="text-gray-600 text-sm md:text-base lg:text-lg">
-                          Sms:
-                        </span>
-                        <span>
-                          &nbsp;{displaySettings(item[0].settings, "sms")}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-gray-600 text-sm md:text-base lg:text-lg">
-                          Call:
-                        </span>
-                        <span>
-                          &nbsp;{displaySettings(item[0].settings, "call")}
-                        </span>
-                      </div>
-                    </td>
-                  </tr>
-                </Link>
-              );
+              return <DataRow key={index} data={item} />;
             })
           ) : (
             ""
@@ -132,11 +71,11 @@ function displaySettings(settings: any, key: string) {
     let onOff = settings.smsOn ? "On" : "Off";
     console.log("Sms On : " + onOff);
     return onOff;
-  } else console.log("Settings Sms is null");
+  }
 
   if (settings != null && key == "call") {
     let onOff = settings.callOn ? "On" : "Off";
     console.log("Call On : " + onOff);
     return onOff;
-  } else console.log("Settings Call is null");
+  }
 }
