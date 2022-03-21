@@ -13,7 +13,6 @@ export default function DataTable() {
   useEffect(() => {
     readHistories().then((item) => {
       if (item) {
-        console.log(item);
         setHistories(item);
         setLoading(false);
       }

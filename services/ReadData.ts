@@ -94,7 +94,9 @@ function sortByTimestampLimit(arr: Object) {
 
 function filterSettingsOff(histories: Array<Array<History>>) {
   return histories.filter(function (item) {
-    return !item[0].settings.smsOn || !item[0].settings.callOn;
+    if (item[0].settings != null) {
+      return !item[0].settings.smsOn || !item[0].settings.callOn;
+    }
   });
 }
 
