@@ -2,7 +2,6 @@ import React from "react";
 import { Table } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { readHistories } from "../services/ReadData";
-import Link from "next/link";
 import { History } from "../models/History";
 import DataRow from "./DataRow";
 
@@ -24,7 +23,7 @@ export default function DataTable() {
       <thead className="bg-yellow-300">
         <tr>
           <th className="md:text-lg lg:text-xl lg:pl-6 tracking-wider rounded-tl-xl">
-            UID
+            TUID
           </th>
           <th className="md:text-lg lg:text-xl tracking-wider">Test 1</th>
           <th className="md:text-lg lg:text-xl tracking-wider">Test 2</th>
@@ -41,7 +40,9 @@ export default function DataTable() {
               return <DataRow key={index} data={item} />;
             })
           ) : (
-            ""
+            <tr>
+              <td>No data yet...</td>
+            </tr>
           )
         ) : (
           <tr>
