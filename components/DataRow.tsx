@@ -20,14 +20,18 @@ export default function DataRow({ data }: { data: Array<History> }) {
         </td>
         <td className="md:text-lg">
           <div>
-            <span className="lg:text-xl">{data[1].score}</span>
+            <span className="lg:text-xl">
+              {data[1] == null ? "N/A" : data[1].score}
+            </span>
             <span className="text-gray-600 text-sm">
               &nbsp;
-              {data[1].questionnaireType}
+              {data[1] == null ? "N/A" : data[1].questionnaireType}
             </span>
           </div>
           <div className="text-sm md:text-base text-gray-600 tracking-wider">
-            {convertTimestampToDate(data[1].timestamp.seconds)}
+            {data[1] == null
+              ? "N/A"
+              : convertTimestampToDate(data[1].timestamp.seconds)}
           </div>
         </td>
         <td className="md:text-lg tracking-wide">
@@ -35,11 +39,13 @@ export default function DataRow({ data }: { data: Array<History> }) {
             <span className="lg:text-xl">{data[2].score}</span>
             <span className="text-gray-600 text-sm">
               &nbsp;
-              {data[2].questionnaireType}
+              {data[2] == null ? "N/A" : data[2].questionnaireType}
             </span>
           </div>
           <div className="text-sm md:text-base text-gray-600 tracking-wider">
-            {convertTimestampToDate(data[2].timestamp.seconds)}
+            {data[2] == null
+              ? "N/A"
+              : convertTimestampToDate(data[2].timestamp.seconds)}
           </div>
         </td>
         <td className="md:text-lg tracking-wide">
