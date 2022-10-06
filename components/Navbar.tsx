@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Image from "next/image";
+// import Image from "next/image";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -17,7 +17,7 @@ export default function Navbar() {
         <div className="container mx-auto flex justify-between items-center xl:ml-20">
           <Link href="/" passHref>
             <div>
-              <Image
+              <img
                 className="rounded-lg cursor-pointer"
                 src="/logo.svg"
                 width={70}

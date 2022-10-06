@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import SignIn from "../components/SignIn";
-import Image from "next/image";
+// import Image from "next/image";
 
 const Login: NextPage = () => {
   return (
